@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="4b010669-493f-41ec-9f63-b57aa15facfa" 
+        solutionId="4b010669-493f-41ec-9f63-b57aa15facfa" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="AlmondLabs.SharePoint.Web"
+        sharePointProductVersion="15.0">
+</package>

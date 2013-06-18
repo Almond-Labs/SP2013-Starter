@@ -8,10 +8,10 @@ using Microsoft.SharePoint.Utilities;
 
 namespace AlmondLabs.Sharepoint.Core.Cache
 {
+    //http://bernado-nguyen-hoan.com/2013/01/03/how-to-use-sharepoints-2013-appfabric-caching-in-your-code/
+
     public static class CacheManager
     {
-        //http://bernado-nguyen-hoan.com/2013/01/03/how-to-use-sharepoints-2013-appfabric-caching-in-your-code/
-
         private static readonly object Lock = new object();
         private static DataCache _defaultCache;
 
@@ -43,7 +43,6 @@ namespace AlmondLabs.Sharepoint.Core.Cache
 
         private static DataCacheFactoryConfiguration GetDataCacheFactoryConfiguration()
         {
-            //
             SPDistributedCacheClusterInfoManager local = SPDistributedCacheClusterInfoManager.Local;
             SPDistributedCacheClusterInfo sPDistributedCacheClusterInfo =
                 local.GetSPDistributedCacheClusterInfo(SPDistributedCacheClusterConfigHelper.SPDistributedCacheClusterName);

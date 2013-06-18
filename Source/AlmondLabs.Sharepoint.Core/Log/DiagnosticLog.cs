@@ -3,6 +3,8 @@ using Microsoft.SharePoint.Administration;
 
 namespace AlmondLabs.Sharepoint.Core.Log
 {
+    //http://blog.mastykarz.nl/logging-uls-sharepoint-2010/
+
     [System.Runtime.InteropServices.Guid("02420c76-a3b9-4526-9685-2a9e659a838a")]
     public class DiagnosticLog : SPDiagnosticsServiceBase
     {

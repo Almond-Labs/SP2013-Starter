@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AlmondLabs.Sharepoint.Core.Log;
+using AlmondLabs.Sharepoint.Core.Utils;
 using Microsoft.ApplicationServer.Caching;
 using Microsoft.SharePoint.Administration;
 using Microsoft.SharePoint.DistributedCaching.Utilities;
@@ -9,6 +10,7 @@ using Microsoft.SharePoint.Utilities;
 namespace AlmondLabs.Sharepoint.Core.Cache
 {
     //http://bernado-nguyen-hoan.com/2013/01/03/how-to-use-sharepoints-2013-appfabric-caching-in-your-code/
+    //Source: Microsoft.SharePoint.DistributedCaching.SPDistributedCachePointerWrapper
 
     public static class CacheManager
     {
@@ -26,13 +28,15 @@ namespace AlmondLabs.Sharepoint.Core.Cache
                         if (_defaultCache == null)
                         {
                             //Must revert to application pool account in multi front end farms
-                            using (new Utils.SecurityContext())
+                            using (new ImpersonationContext())
                             {
                                 var dataCacheFactoryConfiguration = GetDataCacheFactoryConfiguration();
-                                var dataCacheFactory = new DataCacheFactory(dataCacheFactoryConfiguration);
-                                _defaultCache = dataCacheFactory.GetCache(
-                                    string.Format("{0}_{1}", SPDistributedCacheContainerType.DistributedDefaultCache,
-                                                  SPFarm.Local.Id));
+                                using (var dataCacheFactory = new DataCacheFactory(dataCacheFactoryConfiguration))
+                                {
+                                    _defaultCache = dataCacheFactory.GetCache(
+                                        string.Format("{0}_{1}", SPDistributedCacheContainerType.DistributedDefaultCache,
+                                                      SPFarm.Local.Id));
+                                }
                             }
                         }
                         return _defaultCache;

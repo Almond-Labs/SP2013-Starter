@@ -3,10 +3,10 @@ using System.Security.Principal;
 
 namespace AlmondLabs.Sharepoint.Core.Utils
 {
-    public class SecurityContext : IDisposable
+    public class ImpersonationContext : IDisposable
     {
         WindowsImpersonationContext _ctx;
-        public SecurityContext()
+        public ImpersonationContext()
         {
             UseAppPoolIdentity();
         }

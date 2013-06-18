@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmondLabs.Sharepoint.Core", "AlmondLabs.Sharepoint.Core\AlmondLabs.Sharepoint.Core.csproj", "{EBC05E4C-400F-42D8-B892-AB8AAB32D7D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmondLabs.SharePoint.Core", "AlmondLabs.Sharepoint.Core\AlmondLabs.SharePoint.Core.csproj", "{EBC05E4C-400F-42D8-B892-AB8AAB32D7D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlmondLabs.SharePoint.Web", "AlmondLabs.SharePoint.Web\AlmondLabs.SharePoint.Web.csproj", "{0B776176-6E0B-41D1-B637-3A2BB260279F}"
 EndProject

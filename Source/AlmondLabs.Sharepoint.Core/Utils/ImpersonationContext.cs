@@ -3,7 +3,7 @@ using System.Security.Principal;
 
 namespace AlmondLabs.Sharepoint.Core.Utils
 {
-    public class ImpersonationContext : IDisposable
+    internal class ImpersonationContext : IDisposable
     {
         WindowsImpersonationContext _ctx;
         public ImpersonationContext()

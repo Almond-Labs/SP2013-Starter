@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package dslVersion="1.0.0.0" 
-        Id="4b010669-493f-41ec-9f63-b57aa15facfa" 
-        solutionId="4b010669-493f-41ec-9f63-b57aa15facfa" 
-        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
-        name="AlmondLabs.SharePoint.Web"
-        sharePointProductVersion="15.0">
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4b010669-493f-41ec-9f63-b57aa15facfa" solutionId="4b010669-493f-41ec-9f63-b57aa15facfa" resetWebServer="false" sharePointProductVersion="15.0" name="AlmondLabs.SharePoint.Web" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="19a01660-4a49-4c42-8ec0-8779669ff7f1" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="c9d2d9ad-5aae-44a9-9a7d-6a5bdcb7952b" />
+  </projectItems>
 </package>

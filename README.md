@@ -5,7 +5,7 @@ SP2013-Starter Solution
 
 <h2>AlmondLabs.SharePoint.Core Features</h2>
 <ol>
-  <li>SPDistributedCache Wrapper</li>
+  <li><a href="http://almondlabs.com/blog/using-the-distributed-cache-in-sharepoint-2013.aspx">SPDistributedCache Wrapper</a></li>
   <li>ULS Logging Infrastructure</li>
   <li>Delegate Utility Methods</li>
 </ol>

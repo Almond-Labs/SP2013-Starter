@@ -55,7 +55,7 @@ namespace AlmondLabs.Sharepoint.Core.Cache
             var list = new List<DataCacheServerEndpoint>();
             foreach (SPDistributedCacheHostInfo current in cacheHostsInfoCollection)
             {
-                DiagnosticLog.LogInfo("GetAllDataCacheServerEndpointsForFarm", current.HostName);
+                DiagnosticLog.Info("GetAllDataCacheServerEndpointsForFarm", current.HostName);
                 if (current.CacheHostStatus == SPDistributedCacheHostStatus.UP)
                 {
                     list.Add(new DataCacheServerEndpoint(current.HostName, current.CachePort));
@@ -96,13 +96,13 @@ namespace AlmondLabs.Sharepoint.Core.Cache
             try
             {
                 var cacheItem = DefaultCache.GetCacheItem(key);
-                DiagnosticLog.LogInfo("CacheManager.Get", typeof(T).ToString());
+                DiagnosticLog.Info("CacheManager.Get", typeof(T).ToString());
                 if (cacheItem != null)
                     return (T)cacheItem.Value;
             }
             catch (DataCacheException dce)
             {
-                DiagnosticLog.LogError("CacheManager.Get", dce.ToString());
+                DiagnosticLog.Error("CacheManager.Get", dce.ToString());
             }
             return default(T);
         }
@@ -115,11 +115,11 @@ namespace AlmondLabs.Sharepoint.Core.Cache
                     DefaultCache.Remove(key);
 
                 DefaultCache.Add(key, value, timeSpan);
-                DiagnosticLog.LogInfo("CacheManager.Put", typeof(T).ToString());
+                DiagnosticLog.Info("CacheManager.Put", typeof(T).ToString());
             }
             catch (DataCacheException dce)
             {
-                DiagnosticLog.LogError("CacheManager.Put", dce.ToString());
+                DiagnosticLog.Error("CacheManager.Put", dce.ToString());
             }
         }
     }

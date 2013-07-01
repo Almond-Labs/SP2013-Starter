@@ -22,7 +22,7 @@ namespace AlmondLabs.Sharepoint.Core.Utils
                     }
                     catch (Exception ex)
                     {
-                        DiagnosticLog.LogError(listOp.Method.Name, ex.ToString());
+                        DiagnosticLog.Error(listOp.Method.Name, ex.ToString());
                         throw;
                     }
                 });
@@ -48,7 +48,7 @@ namespace AlmondLabs.Sharepoint.Core.Utils
                         }
                         catch (Exception ex)
                         {
-                            DiagnosticLog.LogError(op.Method.Name, ex.ToString());
+                            DiagnosticLog.Error(op.Method.Name, ex.ToString());
                             throw;
                         }
                         finally
@@ -74,7 +74,7 @@ namespace AlmondLabs.Sharepoint.Core.Utils
                 }
                 catch (Exception ex)
                 {
-                    DiagnosticLog.LogError(op.Method.Name, ex.ToString());
+                    DiagnosticLog.Error(op.Method.Name, ex.ToString());
                     throw;
                 }
             }

@@ -31,13 +31,13 @@ namespace AlmondLabs.Sharepoint.Core.Log
             return areas;
         }
 
-        public static void LogInfo(string methodName, string errorMessage)
+        public static void Info(string methodName, string errorMessage)
         {
             SPDiagnosticsCategory category = LogService.Areas[ProductName].Categories[InfoCategory];
             LogService.WriteTrace(0, category, TraceSeverity.Verbose, methodName + "::" + errorMessage);
         }
 
-        public static void LogError(string methodName, string errorMessage)
+        public static void Error(string methodName, string errorMessage)
         {
             SPDiagnosticsCategory category = LogService.Areas[ProductName].Categories[ErrorCategory];
             LogService.WriteTrace(0, category, TraceSeverity.Unexpected, methodName + "::" + errorMessage);

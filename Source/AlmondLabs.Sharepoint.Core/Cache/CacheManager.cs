@@ -100,7 +100,7 @@ namespace AlmondLabs.Sharepoint.Core.Cache
                 if (cacheItem != null)
                     return (T)cacheItem.Value;
             }
-            catch (DataCacheException dce)
+            catch (Exception dce)
             {
                 DiagnosticLog.Error("CacheManager.Get", dce.ToString());
             }
@@ -117,7 +117,7 @@ namespace AlmondLabs.Sharepoint.Core.Cache
                 DefaultCache.Add(key, value, timeSpan);
                 DiagnosticLog.Info("CacheManager.Put", typeof(T).ToString());
             }
-            catch (DataCacheException dce)
+            catch (Exception dce)
             {
                 DiagnosticLog.Error("CacheManager.Put", dce.ToString());
             }

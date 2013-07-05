@@ -79,7 +79,7 @@
     <Content Include="Layouts\AL.SP\app.js" />
     <Content Include="Layouts\AL.SP\jquery-1.10.1.min.js" />
     <Content Include="Layouts\AL.SP\knockout-2.2.1.js" />
-    <Content Include="Layouts\AL.SP\mods.js" />
+    <Content Include="Layouts\AL.SP\searchbox.js" />
     <Content Include="Modules\SearchCenter\Elements.xml" />
     <Content Include="Modules\SearchCenter\Placeholder.txt" />
   </ItemGroup>

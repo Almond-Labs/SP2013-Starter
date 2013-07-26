@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SearchSources>
+  <ServiceName>Search Service Application</ServiceName>
+  <Sources>
+    <Source Name="Source 1" SortField="AverageRating" SortDirection="Descending" Provider="Local SharePoint Provider">{searchTerms} {?Property1:{QueryString.Prop1}}</Source>
+    <Source Name="Source 2" SortField="LastModifiedTime" SortDirection="Descending" Provider="Local SharePoint Provider">{searchTerms} {ContentTypeId:0x0101009E16226B3617427B882606B24B1A78C5}</Source>
+  </Sources>
+</SearchSources>

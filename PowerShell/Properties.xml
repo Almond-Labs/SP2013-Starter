@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SearchProperties>
+  <ServiceName>Search Service Application</ServiceName>
+  <CrawledProperties>
+    <CrawledProperty Type="Text" Name="ows_String1" />
+    <CrawledProperty Type="Integer" Name="ows_Integer1" />
+    <CrawledProperty Type="Decimal" Name="ows_Decimal1" />
+    <CrawledProperty Type="DateTime" Name="ows_DateTime1" />
+    <CrawledProperty Type="YesNo" Name="ows_Boolean1" />
+  </CrawledProperties>
+  <ManagedProperties>
+	<!--Type: Text=1,Integer=2,Decimal=3,DateTime=4,YesNo=5,Binary=6 -->
+    <ManagedProperty Type="1" Name="Title" Recreate="false" Searchable="true" Queryable="true" Retrievable="true" HasMultiple="false" Refinable="false" Sortable="false" RespectPriority="true">
+      <Map Category="SharePoint">ows_String</Map>
+    </ManagedProperty>
+    <ManagedProperty Type="1" Name="TextColumn" Recreate="true" Searchable="true" Queryable="true" Retrievable="true" HasMultiple="true" Refinable="false" Sortable="false" RespectPriority="false">
+		<Map Category="SharePoint">ows_String1</Map>
+		<Map Category="SharePoint">ows_SiteName</Map>
+    </ManagedProperty>    
+    <ManagedProperty Type="2" Name="CountColumn" Recreate="true" Searchable="false" Queryable="false" Retrievable="true" HasMultiple="false" Refinable="true" Sortable="true" RespectPriority="true">
+      <Map Category="SharePoint">ows_Integer1</Map>	  
+    </ManagedProperty>
+    <ManagedProperty Type="3" Name="CurrencyColumn" Recreate="true" Searchable="false" Queryable="false" Retrievable="true" HasMultiple="false" Refinable="true" Sortable="true" RespectPriority="true">
+      <Map Category="SharePoint">ows_Decimal1</Map>
+    </ManagedProperty>
+    <ManagedProperty Type="4" Name="ColumnDate00" Recreate="true" Searchable="false" Queryable="true" Retrievable="true" HasMultiple="false" Refinable="true" Sortable="false" RespectPriority="true">
+      <Map Category="SharePoint">ows_DateTime1</Map>
+    </ManagedProperty>
+    <ManagedProperty Type="5" Name="BoolColumn" Recreate="true" Searchable="true" Queryable="true" Retrievable="true" HasMultiple="false" Refinable="true" Sortable="false" RespectPriority="true">
+      <Map Category="SharePoint">ows_Boolean1</Map>
+    </ManagedProperty>
+  </ManagedProperties>
+</SearchProperties>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CrawlRules>
+  <ServiceName>Search Service Application</ServiceName>
+  <Rules>
+    <Rule Type="ExclusionRule" FollowComplexUrls="false" RegularExpression="false">*://*/_catalogs/masterpage/*</Rule>
+    <Rule Type="ExclusionRule" FollowComplexUrls="true" RegularExpression="false">*://*siteassets*</Rule>
+    <Rule Type="ExclusionRule" FollowComplexUrls="false" RegularExpression="false">*://*/editform.aspx</Rule>
+    <Rule Type="ExclusionRule" FollowComplexUrls="false" RegularExpression="false">*://*/dispform.aspx</Rule>
+    <Rule Type="InclusionRule" FollowComplexUrls="true" CrawlAsHttp="true" SuppressIndexing="false" RegularExpression="true">http://ExampleSharePointSite</Rule>
+  </Rules>
+</CrawlRules>

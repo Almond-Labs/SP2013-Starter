@@ -7,8 +7,8 @@
     <ProjectGuid>{0B776176-6E0B-41D1-B637-3A2BB260279F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AlmondLabs.SharePoint.Web</RootNamespace>
-    <AssemblyName>AlmondLabs.SharePoint.Web</AssemblyName>
+    <RootNamespace>AL.SharePoint.Web</RootNamespace>
+    <AssemblyName>AL.SharePoint.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetOfficeVersion>15.0</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>

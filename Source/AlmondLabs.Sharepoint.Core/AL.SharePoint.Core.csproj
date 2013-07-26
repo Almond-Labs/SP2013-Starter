@@ -7,8 +7,8 @@
     <ProjectGuid>{EBC05E4C-400F-42D8-B892-AB8AAB32D7D9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AlmondLabs.Sharepoint.Core</RootNamespace>
-    <AssemblyName>AlmondLabs.Sharepoint.Core</AssemblyName>
+    <RootNamespace>AL.Sharepoint.Core</RootNamespace>
+    <AssemblyName>AL.Sharepoint.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>

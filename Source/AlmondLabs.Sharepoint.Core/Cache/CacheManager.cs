@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using AlmondLabs.Sharepoint.Core.Log;
-using AlmondLabs.Sharepoint.Core.Utils;
+using AL.Sharepoint.Core.Log;
+using AL.Sharepoint.Core.Utils;
 using Microsoft.ApplicationServer.Caching;
 using Microsoft.SharePoint.Administration;
 using Microsoft.SharePoint.DistributedCaching.Utilities;
 
-namespace AlmondLabs.Sharepoint.Core.Cache
+namespace AL.Sharepoint.Core.Cache
 {
     //http://bernado-nguyen-hoan.com/2013/01/03/how-to-use-sharepoints-2013-appfabric-caching-in-your-code/
     //Source: Microsoft.SharePoint.DistributedCaching.SPDistributedCachePointerWrapper

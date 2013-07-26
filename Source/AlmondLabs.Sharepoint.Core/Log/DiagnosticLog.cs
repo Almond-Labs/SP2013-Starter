@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.SharePoint.Administration;
 
-namespace AlmondLabs.Sharepoint.Core.Log
+namespace AL.Sharepoint.Core.Log
 {
     //http://blog.mastykarz.nl/logging-uls-sharepoint-2010/
 

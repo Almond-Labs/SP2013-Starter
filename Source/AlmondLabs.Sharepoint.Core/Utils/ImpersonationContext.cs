@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 
-namespace AlmondLabs.Sharepoint.Core.Utils
+namespace AL.Sharepoint.Core.Utils
 {
     internal class ImpersonationContext : IDisposable
     {

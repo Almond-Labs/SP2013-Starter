@@ -1,8 +1,8 @@
 ﻿using System;
-using AlmondLabs.Sharepoint.Core.Log;
+using AL.Sharepoint.Core.Log;
 using Microsoft.SharePoint;
 
-namespace AlmondLabs.Sharepoint.Core.Utils
+namespace AL.Sharepoint.Core.Utils
 {
     public class SPUtils
     {

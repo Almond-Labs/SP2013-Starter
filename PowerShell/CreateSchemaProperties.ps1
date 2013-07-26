@@ -5,13 +5,11 @@ Param(
 )
 
 #http://consultingblogs.emc.com/mattlally/archive/2011/12/20/create-sharepoint-2010-search-crawl-and-managed-properties-using-powershell.aspx
-
 Add-PSSnapin "Microsoft.SharePoint.PowerShell" -ErrorAction SilentlyContinue
 
 write-host "Parsing file: " $fileName
 $XmlDoc = [xml](Get-Content $fileName)
 
-#get the node containing the name of the search service application where you want to add properties
 $sa = $XmlDoc.SearchProperties.ServiceName
 $searchapp = Get-SPEnterpriseSearchServiceApplication $sa
 
@@ -51,6 +49,7 @@ foreach ($PropertyNode in $PropertyNodeList.ManagedProperty)
 		}
 		New-SPEnterpriseSearchMetadataManagedProperty -SearchApplication $searchapp -Name $PropertyNode.Name -Type $PropertyNode.Type
     }
+
 	if($mp = Get-SPEnterpriseSearchMetadataManagedProperty -SearchApplication $searchapp -Identity $PropertyNode.Name)
 	{
 		if($recreate)
@@ -64,6 +63,7 @@ foreach ($PropertyNode in $PropertyNodeList.ManagedProperty)
 			$mp.Sortable = [System.Convert]::ToBoolean($PropertyNode.Sortable)
 			$mp.Update()
 		}
+
 		foreach ($SharePointPropMap in $SharePointPropMapList)
 		{
 			$cat = Get-SPEnterpriseSearchMetadataCategory –SearchApplication $searchapp –Identity $SharePointPropMap.Category

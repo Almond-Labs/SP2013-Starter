@@ -16,5 +16,5 @@ SP2013-Starter Solution
   <li>jQuery 1.10.1</li>
   <li><a href="http://almondlabs.com/blog/adding-interactive-ratings-to-sharepoint-2013-search-results-part-1.aspx">Document Rating Binding Handlers</a></li>
   <li><a href="http://almondlabs.com/blog/adding-interactive-ratings-to-sharepoint-2013-search-results-part-2.aspx">Document Rating View Models</a></li>
-  <li>SmallInputSearchBox Enhancements</li>
+  <li><a href="http://almondlabs.com/blog/enhancing-the-small-input-search-box/">SmallInputSearchBox Enhancements</a></li>
 </ol>

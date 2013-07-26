@@ -5,7 +5,6 @@ using AlmondLabs.Sharepoint.Core.Utils;
 using Microsoft.ApplicationServer.Caching;
 using Microsoft.SharePoint.Administration;
 using Microsoft.SharePoint.DistributedCaching.Utilities;
-using Microsoft.SharePoint.Utilities;
 
 namespace AlmondLabs.Sharepoint.Core.Cache
 {
@@ -21,26 +20,23 @@ namespace AlmondLabs.Sharepoint.Core.Cache
         {
             get
             {
-                using (new SPMonitoredScope("AL.SP.CacheManager.DefaultCache"))
+                lock (Lock)
                 {
-                    lock (Lock)
+                    if (_defaultCache == null)
                     {
-                        if (_defaultCache == null)
+                        //Must revert to application pool account in multi front end farms
+                        using (new ImpersonationContext())
                         {
-                            //Must revert to application pool account in multi front end farms
-                            using (new ImpersonationContext())
+                            var dataCacheFactoryConfiguration = GetDataCacheFactoryConfiguration();
+                            using (var dataCacheFactory = new DataCacheFactory(dataCacheFactoryConfiguration))
                             {
-                                var dataCacheFactoryConfiguration = GetDataCacheFactoryConfiguration();
-                                using (var dataCacheFactory = new DataCacheFactory(dataCacheFactoryConfiguration))
-                                {
-                                    _defaultCache = dataCacheFactory.GetCache(
-                                        string.Format("{0}_{1}", SPDistributedCacheContainerType.DistributedDefaultCache,
-                                                      SPFarm.Local.Id));
-                                }
+                                _defaultCache = dataCacheFactory.GetCache(
+                                    string.Format("{0}_{1}", SPDistributedCacheContainerType.DistributedDefaultCache,
+                                                    SPFarm.Local.Id));
                             }
                         }
-                        return _defaultCache;
                     }
+                    return _defaultCache;
                 }
             }
         }

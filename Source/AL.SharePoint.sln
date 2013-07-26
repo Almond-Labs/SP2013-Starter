@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AL.SharePoint.Core", "AlmondLabs.Sharepoint.Core\AL.SharePoint.Core.csproj", "{EBC05E4C-400F-42D8-B892-AB8AAB32D7D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AL.SharePoint.Core", "AL.Sharepoint.Core\AL.SharePoint.Core.csproj", "{EBC05E4C-400F-42D8-B892-AB8AAB32D7D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AL.SharePoint.Web", "AlmondLabs.SharePoint.Web\AL.SharePoint.Web.csproj", "{0B776176-6E0B-41D1-B637-3A2BB260279F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AL.SharePoint.Web", "AL.SharePoint.Web\AL.SharePoint.Web.csproj", "{0B776176-6E0B-41D1-B637-3A2BB260279F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{090145EC-54BB-48E3-856A-E0C50290FBF5}"
 	ProjectSection(SolutionItems) = preProject

@@ -39,6 +39,12 @@ foreach ($SourceNode in $SourcesList.Source)
 		$sortCollection.Add($SourceNode.SortField, $sortDirection)
 		$queryProperties["SortList"] = [Microsoft.Office.Server.Search.Query.SortCollection]$sortCollection
 	}
+    
+    $resultSource = $fedManager.GetSourceByName($SourceNode.Name, $searchOwner)
+    if($resultSource -ne $null) { 
+        Write-Host "Source Removed: " $resultSource.Name
+        $fedManager.RemoveSource($resultSource)
+    }
 
 	$resultSource = $fedManager.CreateSource($searchOwner)
 	$resultSource.Name = $SourceNode.Name

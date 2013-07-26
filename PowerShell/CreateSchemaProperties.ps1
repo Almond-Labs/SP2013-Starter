@@ -44,6 +44,7 @@ foreach ($PropertyNode in $PropertyNodeList.ManagedProperty)
     {
 		if($mp = Get-SPEnterpriseSearchMetadataManagedProperty -SearchApplication $searchapp -Identity $PropertyNode.Name -ea "silentlycontinue")
 		{
+            Write-Host "Managed Property Removed: " $PropertyNode.Name
 			$mp.DeleteAllMappings()
 			$mp.Delete()
 			$searchapp.Update()

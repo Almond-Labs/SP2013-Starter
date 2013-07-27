@@ -10,13 +10,15 @@ Add-PSSnapin "Microsoft.SharePoint.PowerShell" -ErrorAction SilentlyContinue
 write-host "Parsing file: " $fileName
 $XmlDoc = [xml](Get-Content $fileName)
 
+#Search Service Application
 $sa = $XmlDoc.SearchProperties.ServiceName
 $searchapp = Get-SPEnterpriseSearchServiceApplication $sa
 
+#process crawled properties
 $CrawledPropNodeList = $XmlDoc.SearchProperties.CrawledProperties
 foreach ($CrawledPropNode in $CrawledPropNodeList.CrawledProperty)
 {
-    #Create Crawled Property if it doesn't exist
+    #create crawled property if it doesn't exist
     if (!(Get-SPEnterpriseSearchMetadataCrawledProperty -SearchApplication $searchapp -Name $CrawledPropNode.Name -ea "silentlycontinue"))
     {
 		$varType = 0
@@ -33,6 +35,7 @@ foreach ($CrawledPropNode in $CrawledPropNodeList.CrawledProperty)
     }
 }
 
+#process managed properties
 $PropertyNodeList = $XmlDoc.SearchProperties.ManagedProperties
 foreach ($PropertyNode in $PropertyNodeList.ManagedProperty)
 {
@@ -40,6 +43,7 @@ foreach ($PropertyNode in $PropertyNodeList.ManagedProperty)
 	$recreate = [System.Convert]::ToBoolean($PropertyNode.Recreate)
     if ($recreate)
     {
+		#Delete if property should be recreated and it exists
 		if($mp = Get-SPEnterpriseSearchMetadataManagedProperty -SearchApplication $searchapp -Identity $PropertyNode.Name -ea "silentlycontinue")
 		{
             Write-Host "Managed Property Removed: " $PropertyNode.Name
@@ -47,6 +51,8 @@ foreach ($PropertyNode in $PropertyNodeList.ManagedProperty)
 			$mp.Delete()
 			$searchapp.Update()
 		}
+		
+		#create managed property
 		New-SPEnterpriseSearchMetadataManagedProperty -SearchApplication $searchapp -Name $PropertyNode.Name -Type $PropertyNode.Type
     }
 
@@ -54,6 +60,7 @@ foreach ($PropertyNode in $PropertyNodeList.ManagedProperty)
 	{
 		if($recreate)
 		{
+			#set configuration for new property
 			$mp.RespectPriority = [System.Convert]::ToBoolean($PropertyNode.RespectPriority)
 			$mp.Searchable = [System.Convert]::ToBoolean($PropertyNode.Searchable)
 			$mp.Queryable = [System.Convert]::ToBoolean($PropertyNode.Queryable)
@@ -64,6 +71,7 @@ foreach ($PropertyNode in $PropertyNodeList.ManagedProperty)
 			$mp.Update()
 		}
 
+		#add property mappings
 		foreach ($SharePointPropMap in $SharePointPropMapList)
 		{
 			$cat = Get-SPEnterpriseSearchMetadataCategory –SearchApplication $searchapp –Identity $SharePointPropMap.Category

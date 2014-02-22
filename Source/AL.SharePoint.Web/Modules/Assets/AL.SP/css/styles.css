@@ -1,0 +1,18 @@
+﻿.doc-rating span{
+	display:inline-block;
+	height:16px;
+	width:16px;
+	background-image: url('/_layouts/15/images/RatingsSmallStarEmpty.png');
+}
+.doc-rating span.chosen {
+	background-image: url('/_layouts/15/images/RatingsSmallStarFilled.png');
+}
+.doc-rating span.halfChosen {
+	background-image: url('/_layouts/15/images/RatingsSmallStarLeftHalfFilled.png');
+}
+.doc-rating span.hoverChosen {
+	background-image: url('/_layouts/15/images/RatingsSmallStarHoveroverFilled.png');
+}
+.doc-rating span.hoverCleared {
+	background-image: url('/_layouts/15/images/RatingsSmallStarHoveroverEmpty.png');
+}

@@ -1,0 +1,9 @@
+﻿<table border="0" cellspacing="0" dir="none" cellpadding="1" class="ms-listviewtable">
+    <tbody data-bind="foreach: sortedMembers">
+        <tr class="ms-itmHoverEnabled ms-itmhover" setedgeborder="true" data-bind="visible: AccountName">
+            <td class="ms-vb-lastCell ms-cellstyle ms-vb-user ms-vb-lastCell">
+                <a class="ms-subtleLink" href="#" data-bind="attr: { 'href': '/my/Person.aspx?accountname=' + AccountName }, html: Presence, updatePresence: { 'user': $data, 'presence': Presence }"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Assets" Url="_catalogs/masterpage" RootWebOnly="TRUE">
+    <File Path="Assets\AL.SP\css\styles.css" Url="AL.SP/css/styles.css" Type="GhostableInLibrary"></File>
+    <File Path="Assets\AL.SP\js\app.js" Url="AL.SP/js/app.js" Type="GhostableInLibrary"></File>
+    <File Path="Assets\AL.SP\js\jquery-1.11.0.min.js" Url="AL.SP/js/jquery-1.11.0.min.js" Type="GhostableInLibrary"></File>
+    <File Path="Assets\AL.SP\js\knockout-3.0.0.js" Url="AL.SP/js/knockout-3.0.0.js" Type="GhostableInLibrary"></File>
+    <File Path="Assets\AL.SP\js\searchbox.js" Url="AL.SP/js/searchbox.js" Type="GhostableInLibrary"></File>
+    <File Path="Assets\AL.SP\parts\EditMembers.html" Url="AL.SP/parts/EditMembers.html" Type="GhostableInLibrary"></File>
+    <File Path="Assets\AL.SP\parts\Members.html" Url="AL.SP/parts/Members.html" Type="GhostableInLibrary"></File>
+  </Module>
+</Elements>

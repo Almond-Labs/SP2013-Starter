@@ -14,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SandboxedSolution>False</SandboxedSolution>
+    <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,34 +55,44 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Features\SearchCenter\SearchCenter.feature">
-      <FeatureId>{19a01660-4a49-4c42-8ec0-8779669ff7f1}</FeatureId>
+    <None Include="Elements\Scripts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{79023020-00be-4ec8-a45c-3bfe35848a43}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Assets\Assets.feature">
+      <FeatureId>{a4bbf3b4-27b5-4f51-bc1a-8641f340252d}</FeatureId>
     </None>
     <None Include="key.snk" />
-    <None Include="Layouts\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{c9d2d9ad-5aae-44a9-9a7d-6a5bdcb7952b}</SharePointProjectItemId>
+    <None Include="Modules\Assets\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{be332a21-a8c7-4fc6-bc3d-93359e3935e9}</SharePointProjectItemId>
     </None>
-    <None Include="Modules\SearchCenter\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{213adef4-966c-4723-8738-f7484408d1f5}</SharePointProjectItemId>
+    <None Include="Modules\WebParts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{75123417-3dd8-444f-8752-eaba9d9fc12b}</SharePointProjectItemId>
     </None>
     <None Include="Package\Package.package">
-      <PackageId>{4b010669-493f-41ec-9f63-b57aa15facfa}</PackageId>
-    </None>
-    <None Include="Package\Package.Template.xml">
-      <DependentUpon>Package.package</DependentUpon>
+      <PackageId>{660ded22-ac1f-459d-a3c0-752179dfe27d}</PackageId>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Features\SearchCenter\SearchCenter.Template.xml">
-      <DependentUpon>SearchCenter.feature</DependentUpon>
+    <Folder Include="Modules\Assets\AL.SP\img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Elements\Scripts\Elements.xml" />
+    <Content Include="Features\Assets\Assets.Template.xml">
+      <DependentUpon>Assets.feature</DependentUpon>
     </Content>
-    <Content Include="Layouts\AL.SP\app.js" />
-    <Content Include="Layouts\AL.SP\jquery-1.10.2.min.js" />
-    <Content Include="Layouts\AL.SP\knockout-2.3.0.js" />
-    <Content Include="Layouts\AL.SP\searchbox.js" />
-    <Content Include="Modules\SearchCenter\Elements.xml" />
-    <Content Include="Modules\SearchCenter\Placeholder.txt" />
+    <Content Include="Modules\Assets\AL.SP\css\styles.css" />
+    <Content Include="Modules\Assets\AL.SP\js\app.js" />
+    <Content Include="Modules\Assets\AL.SP\js\jquery-1.11.0.min.js" />
+    <Content Include="Modules\Assets\AL.SP\js\knockout-3.0.0.js" />
+    <Content Include="Modules\Assets\AL.SP\js\searchbox.js" />
+    <Content Include="Modules\Assets\AL.SP\parts\EditMembers.html" />
+    <Content Include="Modules\Assets\AL.SP\parts\Members.html" />
+    <Content Include="Modules\Assets\Elements.xml" />
+    <Content Include="Modules\WebParts\Elements.xml" />
+    <None Include="Modules\WebParts\Members.webpart" />
+    <Content Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

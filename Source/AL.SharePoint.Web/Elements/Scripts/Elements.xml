@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <CustomAction ScriptSrc="~site/_catalogs/masterpage/al.sp/js/jquery-1.11.0.min.js" Location="ScriptLink" Sequence="1401"/>
+  <CustomAction ScriptSrc="~site/_catalogs/masterpage/al.sp/js/knockout-3.0.0.js" Location="ScriptLink" Sequence="1402"/>
+  <CustomAction ScriptSrc="~site/_catalogs/masterpage/al.sp/js/app.js" Location="ScriptLink" Sequence="1403"/>
+  <CustomAction ScriptBlock="document.write('&lt;link type=&quot;text/css&quot; rel=&quot;Stylesheet&quot; href=&quot;~site/_catalogs/masterpage/al.sp/css/styles.css&quot; /&gt;');" Location="ScriptLink" Sequence="1404"/>
+</Elements>

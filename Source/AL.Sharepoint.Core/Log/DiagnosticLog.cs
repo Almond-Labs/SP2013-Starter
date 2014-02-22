@@ -8,7 +8,7 @@ namespace AL.Sharepoint.Core.Log
     [System.Runtime.InteropServices.Guid("02420c76-a3b9-4526-9685-2a9e659a838a")]
     public class DiagnosticLog : SPDiagnosticsServiceBase
     {
-        private const string ProductName = "AlmondLabs.SharePoint";
+        private const string ProductName = "AL.SharePoint";
         private const string InfoCategory = ProductName + "_Info";
         private const string ErrorCategory = ProductName + "_Error";
 

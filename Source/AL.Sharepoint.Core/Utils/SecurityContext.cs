@@ -3,7 +3,7 @@ using System.Security.Principal;
 
 namespace AL.Sharepoint.Core.Utils
 {
-    internal class SecurityContext : IDisposable
+    sealed class SecurityContext : IDisposable
     {
         WindowsImpersonationContext _ctx;
         public SecurityContext()

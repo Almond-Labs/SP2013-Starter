@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0B776176-6E0B-41D1-B637-3A2BB260279F}</ProjectGuid>
+    <ProjectGuid>{C203A1BB-EA11-423A-AC5D-685DFAC8D9FE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AL.SharePoint.Web</RootNamespace>
@@ -14,7 +14,6 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SandboxedSolution>False</SandboxedSolution>
-    <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,21 +55,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Elements\Scripts\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{79023020-00be-4ec8-a45c-3bfe35848a43}</SharePointProjectItemId>
+      <SharePointProjectItemId>{cbb117a7-2e6e-477b-a091-3e7f55727312}</SharePointProjectItemId>
     </None>
     <None Include="Features\Assets\Assets.feature">
-      <FeatureId>{a4bbf3b4-27b5-4f51-bc1a-8641f340252d}</FeatureId>
+      <FeatureId>{01388e32-8635-4e8b-b8c7-f9003fc6d3fd}</FeatureId>
     </None>
     <None Include="key.snk" />
     <None Include="Modules\Assets\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{be332a21-a8c7-4fc6-bc3d-93359e3935e9}</SharePointProjectItemId>
+      <SharePointProjectItemId>{37269df1-4f67-4d43-bc79-fcb1f4a1b18a}</SharePointProjectItemId>
     </None>
+    <None Include="Modules\WebParts\Members.webpart" />
     <None Include="Modules\WebParts\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{75123417-3dd8-444f-8752-eaba9d9fc12b}</SharePointProjectItemId>
+      <SharePointProjectItemId>{934759a7-889a-4988-a904-e87770850867}</SharePointProjectItemId>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\Assets\AL.SP\img\" />
+    <None Include="Package\Package.package">
+      <PackageId>{b09c4b8f-c970-437a-882c-32c2305de9fd}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Elements\Scripts\Elements.xml" />
@@ -86,11 +89,13 @@
     <Content Include="Modules\Assets\AL.SP\parts\Members.html" />
     <Content Include="Modules\Assets\Elements.xml" />
     <Content Include="Modules\WebParts\Elements.xml" />
-    <None Include="Modules\WebParts\Members.webpart" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules\Assets\AL.SP\img\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0'">11.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />

@@ -68,9 +68,6 @@
     <None Include="Modules\WebParts\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{75123417-3dd8-444f-8752-eaba9d9fc12b}</SharePointProjectItemId>
     </None>
-    <None Include="Package\Package.package">
-      <PackageId>{660ded22-ac1f-459d-a3c0-752179dfe27d}</PackageId>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\Assets\AL.SP\img\" />
@@ -90,9 +87,6 @@
     <Content Include="Modules\Assets\Elements.xml" />
     <Content Include="Modules\WebParts\Elements.xml" />
     <None Include="Modules\WebParts\Members.webpart" />
-    <Content Include="Package\Package.Template.xml">
-      <DependentUpon>Package.package</DependentUpon>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

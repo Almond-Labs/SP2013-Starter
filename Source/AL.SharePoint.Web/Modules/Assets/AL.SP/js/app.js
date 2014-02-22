@@ -12,8 +12,9 @@ var profilePropertyNames = ["PreferredName", "PictureURL", "AccountName", "Title
 
 var webParts = function () {
     var self = this;
-    self.showMembers = '/_layouts/15/al.sp/parts/Members.html';
-    self.editMembers = '/_layouts/15/al.sp/parts/EditMembers.html';
+    self.partPath = '/_catalogs/masterpage/al.sp/parts/';
+    self.showMembers = self.partPath + 'Members.html';
+    self.editMembers = self.partPath + 'EditMembers.html';
 };
 
 var dataUrl = function () {
@@ -270,29 +271,27 @@ function loadWebPartData(partId, contentFile, getUrl, complete) {
     });
 }
 
-function loadTaxonomy(termSetId, parentCollection, selectedItemFunction) {
+function loadTaxonomy(termSetId, collection) {
     var context = SP.ClientContext.get_current();
     var taxonomySession = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
-    var termStore = taxonomySession.get_termStores().getByName('Managed Metadata Service');
+    var termStore = taxonomySession.getDefaultSiteCollectionTermStore();
     var termSet = termStore.getTermSet(termSetId);
     var terms = termSet.get_terms();
-    recurseTerms(context, terms, parentCollection, selectedItemFunction);
+    recurseTerms(context, terms, collection);
 }
 
-function recurseTerms(context, rootTerms, parentCollection, selectedItemFunction) {
+function recurseTerms(context, rootTerms, parentCollection) {
     context.load(rootTerms);
     context.executeQueryAsync(
         function () {
             var termsEnum = rootTerms.getEnumerator();
             while (termsEnum.moveNext()) {
                 var currentTerm = termsEnum.get_current();
-                var term = new DropDownItem(currentTerm.get_name(), currentTerm.get_id());
-
+                var term = { title: currentTerm.get_name(), id: currentTerm.get_id(), subTerms : [] };
                 parentCollection.push(term);
-                selectedItemFunction(term);
 
                 if (currentTerm.get_termsCount() > 0) {
-                    recurseTerms(context, currentTerm.get_terms(), term.subItems, selectedItemFunction);
+                    recurseTerms(context, currentTerm.get_terms(), term.subTerms);
                 }
             }
         },

@@ -12,7 +12,7 @@
         <property name="Description" type="string">List of team members based on client assignments</property>
         <property name="Content" type="string">&lt;div id="MembersWebPart"&gt;&lt;/div&gt;
 &lt;script type='text/javascript'&gt;
-    loadMembers("MembersWebPart");
+    loadWikiMembers("MembersWebPart");
 &lt;/script&gt;</property>
         <property name="CatalogIconImageUrl" type="string" />
         <property name="Title" type="string">Members</property>

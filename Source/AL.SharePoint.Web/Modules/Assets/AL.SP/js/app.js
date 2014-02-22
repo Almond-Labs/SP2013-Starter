@@ -10,16 +10,12 @@ $j(document).ready(function () {
 var rev = '?Rev=1.01';
 var profilePropertyNames = ["PreferredName", "PictureURL", "AccountName", "Title", "WorkEmail", "SipAddress", "Department"];
 
-var webParts = function () {
-    var self = this;
-    self.partPath = '/_catalogs/masterpage/al.sp/parts/';
-    self.showMembers = self.partPath + 'Members.html';
-    self.editMembers = self.partPath + 'EditMembers.html';
+var webParts = {
+    partPath: '/_catalogs/masterpage/al.sp/parts/',
 };
+webParts.showMembers = webParts.partPath + 'Members.html';
+webParts.editMembers = webParts.partPath + 'EditMembers.html';
 
-var dataUrl = function () {
-    var self = this;
-};
 
 //Handlers
 ko.bindingHandlers.clientPeoplePicker = {};

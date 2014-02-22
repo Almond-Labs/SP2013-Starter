@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="Assets\" Type="ElementManifest" />
+    <ProjectItemFile Source="AL.SP\css\styles.css" Target="Assets\AL.SP\css\" Type="ElementFile" />
+    <ProjectItemFile Source="AL.SP\js\app.js" Target="Assets\AL.SP\js\" Type="ElementFile" />
+    <ProjectItemFile Source="AL.SP\js\jquery-1.11.0.min.js" Target="Assets\AL.SP\js\" Type="ElementFile" />
+    <ProjectItemFile Source="AL.SP\js\knockout-3.0.0.js" Target="Assets\AL.SP\js\" Type="ElementFile" />
+    <ProjectItemFile Source="AL.SP\js\searchbox.js" Target="Assets\AL.SP\js\" Type="ElementFile" />
+    <ProjectItemFile Source="AL.SP\parts\EditMembers.html" Target="Assets\AL.SP\parts\" Type="ElementFile" />
+    <ProjectItemFile Source="AL.SP\parts\Members.html" Target="Assets\AL.SP\parts\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

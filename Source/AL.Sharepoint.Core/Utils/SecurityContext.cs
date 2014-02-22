@@ -6,7 +6,7 @@ namespace AL.Sharepoint.Core.Utils
     internal class SecurityContext : IDisposable
     {
         WindowsImpersonationContext _ctx;
-        private SecurityContext()
+        public SecurityContext()
         {
             UseAppPoolIdentity();
         }

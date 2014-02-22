@@ -242,14 +242,11 @@ function SearchRatingViewModel(avgRating, siteUrl, listId, listItemId) {
 
 //Functions
 function loadSPData(url, completeFunction) {
-
-    $j(document).ready(function () {
-        $j.ajax({
-            url: url, method: "GET",
-            headers: { "accept": "application/json;odata=verbose" }
-        }).success(function (data) {
-            completeFunction(data);
-        });
+    $j.ajax({
+        url: url, method: "GET",
+        headers: { "accept": "application/json;odata=verbose" }
+    }).success(function (data) {
+        completeFunction(data);
     });
 }
 

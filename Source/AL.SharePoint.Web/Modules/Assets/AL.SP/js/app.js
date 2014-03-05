@@ -476,6 +476,6 @@ function loadMembersWebPart(initUsers) {
 
 SPSODAction(["sp.js"], function () {
     for (var key in webParts) {
-        webParts[key] = _spPageContextInfo.siteServerRelativeUrl + webParts[key];
+        webParts[key] = _spPageContextInfo.siteServerRelativeUrl.replace(/\/$/, "") + webParts[key];
     }
 });

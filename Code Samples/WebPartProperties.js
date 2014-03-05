@@ -51,7 +51,8 @@ function getWebPartProperties(wpId) {
 function saveWebPartProperties(wpId, obj) {
     var dfd = $.Deferred();
 
-    getWebPartProperties(wpId).done(function (webPartProperties, webPartDef, clientContext) {
+    getWebPartProperties(wpId).done(
+        function (webPartProperties, webPartDef, clientContext) {
         //set web part properties
         for (var key in obj) {
             webPartProperties.set_item(key, obj[key]);

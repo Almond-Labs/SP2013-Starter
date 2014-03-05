@@ -8,7 +8,6 @@ $j(document).ready(function () {
 
 //Variables
 var rev = '?Rev=1.01';
-var profilePropertyNames = ["PreferredName", "PictureURL", "AccountName", "Title", "WorkEmail", "SipAddress", "Department"];
 
 var webParts = {
     partPath: '/_catalogs/masterpage/al.sp/parts/',
@@ -16,17 +15,119 @@ var webParts = {
 webParts.showMembers = webParts.partPath + 'Members.html';
 webParts.editMembers = webParts.partPath + 'EditMembers.html';
 
-
 //Handlers
-ko.bindingHandlers.clientPeoplePicker = {};
-ko.bindingHandlers.clientPeoplePicker.currentId = 0;
-ko.bindingHandlers.clientPeoplePicker.buildPicker = function (element, valueAccessor) {
-    var obs = valueAccessor();
-    if (!ko.isObservable(obs)) {
-        throw "clientPeoplePicker binding requires an observable";
-    }
+ko.bindingHandlers.renderUser = {
+    propertyNames: ["PreferredName", "PictureURL", "AccountName", "Title", "WorkEmail", "SipAddress"],
+    context: null,
+    peopleManager: null,
+    callbacks: null,
+    timeout: null,
+    init: function (element, valueAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor());
+        var userName = value;
+        if (value.userName)
+            userName = value.userName;
 
-    function initializePeoplePicker(elementId) {
+        var ru = ko.bindingHandlers.renderUser;
+        if (ru.context == null) {
+            ru.context = clientContext = SP.ClientContext.get_current();
+            ru.peopleManager = new SP.UserProfiles.PeopleManager(ru.context);
+        }
+        if (ru.callbacks == null)
+            ru.callbacks = new Array();
+
+        var userProfilePropertiesForUser = new SP.UserProfiles.UserProfilePropertiesForUser(ru.context, userName, ru.propertyNames);
+        var userProfileProperties = ru.peopleManager.getUserProfilePropertiesFor(userProfilePropertiesForUser);
+        clientContext.load(userProfilePropertiesForUser);
+        ru.callbacks[ru.callbacks.length] = function () {
+            userProfileProperties.LoginName = userName;
+            userProfileProperties.Role = "";
+            for (var i = 0; i < ru.propertyNames.length; i++) {
+                userProfileProperties[ru.propertyNames[i]] = userProfileProperties[i];
+            }
+            if (!userProfileProperties.AccountName)
+                userProfileProperties.AccountName = userName;
+            element.innerHTML = ru.renderPresence(userProfileProperties, value.schemaOverride);
+        };
+        clearTimeout(ru.timeout);
+        ru.timeout = setTimeout(function () {
+            ru.context.executeQueryAsync(function () {
+                for (var x = 0; x < ru.callbacks.length; x++) {
+                    ru.callbacks[x]();
+                }
+                ru.context = null;
+                ru.callbacks = null;
+                ru.timeout = null;
+                ProcessImn();
+            }, function () {
+                //handle errors
+            });
+        }, 1);
+    },
+    renderPresence: function (user, fieldSchemaOverride) {
+        var renderCtx = new ContextInfo();
+        renderCtx.Templates = {};
+        renderCtx.Templates["Fields"] = {};
+
+        var fieldSchemaData = fieldSchemaOverride;
+        if (!fieldSchemaData)
+            fieldSchemaData = { "WithPictureDetail": "1", "PictureSize": "Size_36px" };
+        var listSchema = { "EffectivePresenceEnabled": "1", "PresenceAlt": "User Presence" };
+        var userData = {
+            "id": user.AccountName, "department": user.Role, "jobTitle": user.Title,
+            "title": user.PreferredName, "email": user.WorkEmail, "picture": user.PictureURL, "sip": user.SipAddress
+        };
+        return RenderUserFieldWorker(renderCtx, fieldSchemaData, userData, listSchema);
+    }
+};
+
+ko.bindingHandlers.clientPeoplePicker = {
+    currentId: 0,
+    init: function (element, valueAccessor) {
+        var obs = valueAccessor();
+        if (!ko.isObservable(obs)) {
+            throw "clientPeoplePicker binding requires an observable";
+        }
+
+        var currentId = ko.bindingHandlers.clientPeoplePicker.currentId++;
+        var currentElemId = "ClientPeoplePicker" + currentId;
+        element.setAttribute("id", currentElemId);
+        obs._peoplePickerId = currentElemId + "_TopSpan";
+        ko.bindingHandlers.clientPeoplePicker.initPeoplePicker(currentElemId, obs(), function (elementId, userInfo) {
+            var temp = new Array();
+            for (var x = 0; x < userInfo.length; x++) {
+                temp[temp.length] = userInfo[x].Key;
+            }
+            obs(temp);
+        });
+    },
+    update: function (element, valueAccessor) {
+        var obs = valueAccessor();
+        if (!ko.isObservable(obs)) {
+            throw "clientPeoplePicker binding requires an observable";
+        }
+        if (typeof SPClientPeoplePicker === 'undefined')
+            return;
+
+        var peoplePicker = SPClientPeoplePicker.SPClientPeoplePickerDict[obs._peoplePickerId];
+        if (peoplePicker) {
+            var keys = peoplePicker.GetAllUserKeys();
+            keys = keys.length > 0 ? keys.split(";") : [];
+            var eKeys = obs() && obs().length ? obs() : [];
+            var newKeys = new Array();
+            for (var x = 0; x < keys.length; x++) {
+                for (var y = 0; y < eKeys.length && eKeys[y] != keys[x]; y++) { }
+                if (y >= eKeys.length) {
+                    newKeys[newKeys.length] = keys[x];
+                }
+            }
+            if (newKeys.length > 0) {
+                var keyStr = newKeys.join(";");
+                peoplePicker.AddUserKeys(newKeys.join(";"));
+            }
+        }
+    },
+    initPeoplePicker: function (elementId, keys, onValueChanged) {
         var schema = {};
         schema['PrincipalAccountType'] = 'User';
         schema['SearchPrincipalSource'] = 15;
@@ -40,8 +141,8 @@ ko.bindingHandlers.clientPeoplePicker.buildPicker = function (element, valueAcce
         // PickerEntity objects to set the picker value, and a schema that defines
         // picker properties.
         var users = [];
-        if (obs()) {
-            var parts = obs().split(";");
+        if (keys && keys.length) {
+            var parts = keys;
             for (var x = 0; x < parts.length; x++) {
                 users[users.length] = {
                     AutoFillDisplayText: parts[x].split("|")[1],
@@ -57,25 +158,24 @@ ko.bindingHandlers.clientPeoplePicker.buildPicker = function (element, valueAcce
         }
         SPSODAction(["sp.js", "clienttemplates.js", "clientforms.js", "clientpeoplepicker.js", "autofill.js"], function () {
             SPClientPeoplePicker_InitStandaloneControlWrapper(elementId, users, schema);
+            var picker = SPClientPeoplePicker.SPClientPeoplePickerDict[elementId + "_TopSpan"];
+            picker.OnValueChangedClientScript = onValueChanged;
         });
-        //update to read existing usernames from the observable and initialize picker
     }
-
-    var currentId = ko.bindingHandlers.clientPeoplePicker.currentId++;
-    var currentElemId = "ClientPeoplePicker" + currentId;
-    element.setAttribute("id", currentElemId);
-    initializePeoplePicker(currentElemId);
-
-    obs.pickerEntities = function () {
-        if (typeof SPClientPeoplePicker == 'undefined')
-            return null;
-
-        var peoplePicker = SPClientPeoplePicker.SPClientPeoplePickerDict[currentElemId + "_TopSpan"];
-        return peoplePicker.GetAllUserInfo();
-    };
 };
-ko.bindingHandlers.clientPeoplePicker.init = ko.bindingHandlers.clientPeoplePicker.buildPicker;
-ko.bindingHandlers.clientPeoplePicker.update = ko.bindingHandlers.clientPeoplePicker.buildPicker;
+
+ko.bindingHandlers.webPartId = {
+    init: function (element, valueAccessor) {
+        var obs = valueAccessor();
+        if (!ko.isObservable(obs)) {
+            throw "webPartId binding requires an observable";
+        }
+
+        $j(element).parents("[webpartid]").each(function () {
+            obs($j(this).attr("webpartid"));
+        });
+    }
+};
 
 ko.bindingHandlers.submitOnEnter = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
@@ -90,20 +190,6 @@ ko.bindingHandlers.submitOnEnter = {
         });
     },
     update: function () { }
-};
-
-ko.bindingHandlers.updatePresence = {
-    init: function () { },
-    update: function (element, valueAccessor) {
-        var props = valueAccessor();
-        var sip = props.user.SipAddress;
-        if (sip == '') sip = props.user.WorkEmail;
-        var elm = $j(props.presence).find('img[name="imnmark"]');
-        if (sip && elm) {
-            //TODO: Make sure this only gets called once on complete
-            ProcessImn();
-        }
-    }
 };
 
 ko.bindingHandlers.starRating = {
@@ -146,71 +232,33 @@ ko.bindingHandlers.starRating = {
 };
 
 //ViewModels
-function PeoplePickerMembersViewModel() {
+function PeoplePickerMembersViewModel(initUsers) {
     var self = this;
+    self.webPartId = ko.observable();
     self.error = ko.observable("");
     self.success = ko.observable("");
     self.curId = PeoplePickerMembersViewModel.curId++;
-    self.webPropertyName = ("PeoplePickerValues_" + self.curId + "_" + _spPageContextInfo.serverRequestPath.replace(/\//g, "").replace(/\./g, "").replace(/\s/g, "").replace(/%20/g, "")).toLowerCase();
-    self.members = ko.observableArray([]);
-    self.sortedMembers = self.members;
-    self.savedPickerUsers = ko.observable("");
-    self.savedPickerUsers.subscribe(function (newValue) {
-        if (!newValue)
-            return;
+    self.uniqueName = "KOPeoplePicker_" + self.curId;
+    self.userNames = ko.observableArray();
 
-        var userNames = newValue.split(";");
+    self.saveUsers = function () {
+        getWebPartProperties(self.webPartId()).done(function (wpProps) {
+            var content = wpProps.get_item("Content");
+            var match = /var options\s*=\s*([^;]*?);/.exec(content);
+            if (match)
+                content = content.replace(match[0], match[0].replace(match[1], JSON.stringify(self.userNames())));
 
-        loadUserProfiles(userNames, profilePropertyNames, function (userProfileProperties, index) {
-            userProfileProperties.LoginName = userNames[index];
-            for (var i = 0; i < profilePropertyNames.length; i++) {
-                userProfileProperties[profilePropertyNames[i]] = userProfileProperties[i];
-            }
-            userProfileProperties.Presence = RenderUserPresence(userProfileProperties);
-            self.members.push(userProfileProperties);
-        });
-    });
-    self.getWebProperty = function () {
-        var cCtx = SP.ClientContext.get_current();
-        var web = cCtx.get_web();
-        cCtx.load(web);
-        cCtx.executeQueryAsync(Function.createDelegate(this, function () {
-            var wProps = web.get_allProperties();
-            cCtx.load(wProps);
-            cCtx.executeQueryAsync(Function.createDelegate(this, function () {
-                self.savedPickerUsers(wProps.get_fieldValues()[self.webPropertyName]);
-            }), Function.createDelegate(this, function () { self.onQueryFailed("error loading web properties"); }));
-        }), Function.createDelegate(this, function () { self.onQueryFailed("Error getting current web"); }));
-    };
-    self.saveWebProperty = function () {
-        var entities = self.savedPickerUsers.pickerEntities();
-        var parts = [];
-        for (var x = 0; x < entities.length; x++) {
-            parts[parts.length] = entities[x].Key;
-        }
-        var value = parts.join(";");
-        var cCtx = SP.ClientContext.get_current();
-        var web = cCtx.get_web();
-        cCtx.load(web);
-        cCtx.executeQueryAsync(Function.createDelegate(this, function () {
-            var wProps = web.get_allProperties();
-            wProps.set_item(self.webPropertyName, value);
-            cCtx.get_web().update();
-            cCtx.load(wProps);
-            cCtx.executeQueryAsync(Function.createDelegate(this, function () {
-                self.success("Saved " + parts.length + " user(s)");
-            }), Function.createDelegate(this, function () { self.onQueryFailed("Error loading web properties"); }));
-        }), Function.createDelegate(this, function () { self.onQueryFailed("Error getting current web"); }));
-    };
-    self.onQueryFailed = function (msg) {
-        self.error(msg);
+            saveWebPartProperties(self.webPartId(), { Content: content }).done(function () {
+                self.success("Save successful");
+            }).fail(self.error);
+        }).fail(self.error);
     };
 
     SPSODAction(["sp.js", "clienttemplates.js", "clientforms.js", "clientpeoplepicker.js", "autofill.js"], function () {
-        self.getWebProperty();
+        if (initUsers)
+            self.userNames(initUsers);
     });
 }
-
 PeoplePickerMembersViewModel.curId = 0;
 
 function SearchRatingViewModel(avgRating, siteUrl, listId, listItemId) {
@@ -237,6 +285,54 @@ function SearchRatingViewModel(avgRating, siteUrl, listId, listItemId) {
 }
 
 //Functions
+function getWebPartProperties(wpId) {
+    var dfd = $j.Deferred();
+
+    var clientContext = new SP.ClientContext(_spPageContextInfo.webServerRelativeUrl);
+    var oFile = clientContext.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
+    var limitedWebPartManager = oFile.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
+    var collWebPart = limitedWebPartManager.get_webParts();
+
+    clientContext.load(collWebPart);
+    clientContext.executeQueryAsync(Function.createDelegate(this, function () {
+        var webPartDef = null;
+        for (var x = 0; x < collWebPart.get_count() && !webPartDef; x++) {
+            var temp = collWebPart.get_item(x);
+            if (temp.get_id().toString() === wpId) {
+                webPartDef = temp;
+            }
+        }
+        if (!webPartDef) {
+            dfd.reject("Web Part: " + wpId + " not found on page: " + _spPageContextInfo.webServerRelativeUrl);
+            return;
+        }
+
+        var webPartProperties = webPartDef.get_webPart().get_properties();
+        clientContext.load(webPartProperties);
+        clientContext.executeQueryAsync(Function.createDelegate(this, function () {
+            dfd.resolve(webPartProperties, webPartDef, clientContext);
+        }), Function.createDelegate(this, function () { dfd.reject("Failed to load web part properties"); }));
+    }), Function.createDelegate(this, function () { dfd.reject("Failed to load web part collection"); }));
+
+    return dfd.promise();
+}
+
+function saveWebPartProperties(wpId, obj) {
+    var dfd = $j.Deferred();
+
+    getWebPartProperties(wpId).done(function (webPartProperties, webPartDef, clientContext) {
+        for (var key in obj) {
+            webPartProperties.set_item(key, obj[key]);
+        }
+        webPartDef.saveWebPartChanges();
+        clientContext.executeQueryAsync(Function.createDelegate(this, function () {
+            dfd.resolve();
+        }), Function.createDelegate(this, function () { dfd.reject("Failed to save web part properties"); }));
+    }).fail(function (err) { dfd.reject(err); });
+
+    return dfd.promise();
+}
+
 function loadSPData(url, completeFunction) {
     $j.ajax({
         url: url, method: "GET",
@@ -289,46 +385,6 @@ function recurseTerms(context, rootTerms, parentCollection) {
             }
         },
         function () { });
-}
-
-function loadUserProfiles(userNames, propertyNames, callback, clientContext, peopleManager, index) {
-    if (index >= userNames.length)
-        return;
-
-    if (!clientContext) {
-        SPSODAction(['sp.js', 'SP.UserProfiles.js', 'clienttemplates.js'], function () {
-            clientContext = SP.ClientContext.get_current();
-            peopleManager = new SP.UserProfiles.PeopleManager(clientContext);
-            loadUserProfiles(userNames, propertyNames, callback, clientContext, peopleManager, 0);
-        });
-        return;
-    }
-
-    var userProfilePropertiesForUser = new SP.UserProfiles.UserProfilePropertiesForUser(clientContext, userNames[index], propertyNames);
-    var userProfileProperties = peopleManager.getUserProfilePropertiesFor(userProfilePropertiesForUser);
-    clientContext.load(userProfilePropertiesForUser);
-    clientContext.executeQueryAsync(
-        function () {
-            callback(userProfileProperties, index);
-            loadUserProfiles(userNames, propertyNames, callback, clientContext, peopleManager, ++index);
-        },
-        function () { });
-}
-
-function RenderUserPresence(user, fieldSchemaOverride) {
-    var renderCtx = new ContextInfo();
-    renderCtx.Templates = {};
-    renderCtx.Templates["Fields"] = {};
-
-    var fieldSchemaData = fieldSchemaOverride;
-    if (!fieldSchemaData)
-        fieldSchemaData = { "WithPictureDetail": "1", "PictureSize": "Size_36px" };
-    var listSchema = { "EffectivePresenceEnabled": "1", "PresenceAlt": "User Presence" };
-    var userData = {
-        "id": user.AccountName, "department": user.Department, "jobTitle": user.Title,
-        "title": user.PreferredName, "email": user.WorkEmail, "picture": user.PictureURL, "sip": user.SipAddress
-    };
-    return RenderUserFieldWorker(renderCtx, fieldSchemaData, userData, listSchema);
 }
 
 function formatSearchResults(data) {
@@ -401,9 +457,9 @@ function overrideSearchBox() {
     });
 }
 
-function loadWikiMembers() {
-    var model = new PeoplePickerMembersViewModel();
-    var partId = "Element" + model.webPropertyName;
+function loadMembersWebPart(initUsers) {
+    var model = new PeoplePickerMembersViewModel(initUsers);
+    var partId = "Element_" + model.uniqueName;
     partId = partId.replace(/[^A-z0-9]+/g, '');
     document.write("<div id='" + partId + "'></div>");
     if (pageInEditMode()) {
@@ -417,3 +473,9 @@ function loadWikiMembers() {
         }, true);
     }
 }
+
+SPSODAction(["sp.js"], function () {
+    for (var key in webParts) {
+        webParts[key] = _spPageContextInfo.siteServerRelativeUrl + webParts[key];
+    }
+});

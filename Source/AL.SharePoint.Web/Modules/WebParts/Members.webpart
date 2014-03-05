@@ -9,10 +9,11 @@
         <property name="ExportMode" type="exportmode">All</property>
         <property name="HelpUrl" type="string" />
         <property name="Hidden" type="bool">False</property>
-        <property name="Description" type="string">List of team members based on client assignments</property>
-        <property name="Content" type="string">&lt;div id="MembersWebPart"&gt;&lt;/div&gt;
+        <property name="Description" type="string">List of site team members.</property>
+        <property name="Content" type="string">
 &lt;script type='text/javascript'&gt;
-    loadWikiMembers("MembersWebPart");
+    var options = [];
+    loadMembersWebPart(options);
 &lt;/script&gt;</property>
         <property name="CatalogIconImageUrl" type="string" />
         <property name="Title" type="string">Members</property>

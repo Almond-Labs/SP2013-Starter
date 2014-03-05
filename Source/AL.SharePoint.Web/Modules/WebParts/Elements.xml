@@ -2,7 +2,7 @@
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <Module Name="WebParts" List="113" Url="_catalogs/wp" RootWebOnly="TRUE">
     <File Path="WebParts\Members.webpart" Url="Members.webpart" Type="GhostableInLibrary">
-      <Property Name="Group" Value="Starter" />
+      <Property Name="Group" Value="Almond Labs Starter" />
     </File>
   </Module>
 </Elements>

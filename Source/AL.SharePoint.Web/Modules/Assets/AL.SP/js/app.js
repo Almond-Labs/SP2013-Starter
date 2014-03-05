@@ -238,7 +238,6 @@ function PeoplePickerMembersViewModel(initUsers) {
     self.error = ko.observable("");
     self.success = ko.observable("");
     self.curId = PeoplePickerMembersViewModel.curId++;
-    self.uniqueName = "KOPeoplePicker_" + self.curId;
     self.userNames = ko.observableArray();
 
     self.saveUsers = function () {
@@ -259,7 +258,6 @@ function PeoplePickerMembersViewModel(initUsers) {
             self.userNames(initUsers);
     });
 }
-PeoplePickerMembersViewModel.curId = 0;
 
 function SearchRatingViewModel(avgRating, siteUrl, listId, listItemId) {
     var self = this;
@@ -459,7 +457,7 @@ function overrideSearchBox() {
 
 function loadMembersWebPart(initUsers) {
     var model = new PeoplePickerMembersViewModel(initUsers);
-    var partId = "Element_" + model.uniqueName;
+    var partId = "Element_KOPeoplePicker_" + loadMembersWebPart.curId++;
     partId = partId.replace(/[^A-z0-9]+/g, '');
     document.write("<div id='" + partId + "'></div>");
     if (pageInEditMode()) {
@@ -473,6 +471,7 @@ function loadMembersWebPart(initUsers) {
         }, true);
     }
 }
+loadMembersWebPart.curId = 0;
 
 SPSODAction(["sp.js"], function () {
     for (var key in webParts) {

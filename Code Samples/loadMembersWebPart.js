@@ -1,6 +1,6 @@
 function loadMembersWebPart(initUsers) {
     var model = new PeoplePickerMembersViewModel(initUsers);
-    var partId = "Element_" + model.uniqueName;
+    var partId = "Element_KOPeoplePicker_" + loadMembersWebPart.curId++;
     partId = partId.replace(/[^A-z0-9]+/g, '');
     document.write("<div id='" + partId + "'></div>");
     if (pageInEditMode()) {
@@ -14,3 +14,4 @@ function loadMembersWebPart(initUsers) {
         }, true);
     }
 }
+loadMembersWebPart.curId = 0;

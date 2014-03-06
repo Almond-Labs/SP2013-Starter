@@ -3,7 +3,6 @@ function PeoplePickerMembersViewModel(initUsers) {
     self.webPartId = ko.observable();
     self.error = ko.observable("");
     self.success = ko.observable("");
-    self.curId = PeoplePickerMembersViewModel.curId++;
     self.userNames = ko.observableArray();
 
     self.saveUsers = function () {

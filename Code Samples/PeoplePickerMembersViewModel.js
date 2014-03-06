@@ -12,9 +12,6 @@ function PeoplePickerMembersViewModel(initUsers) {
         }).fail(self.error);
     };
 
-    SPSODAction(["sp.js", "clienttemplates.js", "clientforms.js",
-        "clientpeoplepicker.js", "autofill.js"], function () {
-        if (initUsers)
-            self.userNames(initUsers);
-    });
+    if (initUsers)
+        self.userNames(initUsers);
 }

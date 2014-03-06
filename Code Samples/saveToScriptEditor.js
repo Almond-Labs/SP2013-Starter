@@ -9,7 +9,8 @@ function saveToScriptEditor(wpId, obj) {
             return;
         }
 
-        content = content.replace(match[0], match[0].replace(match[1], JSON.stringify(obj)));
+        content = content.replace(match[0],
+            match[0].replace(match[1], JSON.stringify(obj)));
         saveWebPartProperties(wpId, { Content: content }).done(function () {
             dfd.resolve()
         }).fail(self.error);

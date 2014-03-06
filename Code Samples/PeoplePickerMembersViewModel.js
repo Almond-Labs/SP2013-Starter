@@ -6,7 +6,8 @@ function PeoplePickerMembersViewModel(initUsers) {
     self.userNames = ko.observableArray();
 
     self.saveUsers = function () {
-        saveToScriptEditor(self.webPartId(), self.userNames()).done(function () {
+        saveToScriptEditor(self.webPartId(),
+            self.userNames()).done(function () {
             self.success("Save successful");
         }).fail(self.error);
     };

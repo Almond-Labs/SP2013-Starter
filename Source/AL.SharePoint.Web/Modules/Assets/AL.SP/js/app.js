@@ -93,18 +93,21 @@ ko.bindingHandlers.clientPeoplePicker = {
         var currentElemId = "ClientPeoplePicker" + currentId;
         element.setAttribute("id", currentElemId);
         obs._peoplePickerId = currentElemId + "_TopSpan";
-        ko.bindingHandlers.clientPeoplePicker.initPeoplePicker(currentElemId, obs(), function (elementId, userInfo) {
-            var temp = new Array();
-            for (var x = 0; x < userInfo.length; x++) {
-                temp[temp.length] = userInfo[x].Key;
-            }
-            obs(temp);
+        ko.bindingHandlers.clientPeoplePicker.initPeoplePicker(currentElemId).done(function (picker) {
+            picker.OnValueChangedClientScript = function (elementId, userInfo) {
+                var temp = new Array();
+                for (var x = 0; x < userInfo.length; x++) {
+                    temp[temp.length] = userInfo[x].Key;
+                }
+                obs(temp);
+            };
+            ko.bindingHandlers.clientPeoplePicker.update(element, valueAccessor);
         });
     },
     update: function (element, valueAccessor) {
         var obs = valueAccessor();
         if (!ko.isObservable(obs)) {
-            throw "clientPeoplePicker binding requires an observable";
+            throw "clientPeoplePicker binding requires an observable array";
         }
         if (typeof SPClientPeoplePicker === 'undefined')
             return;
@@ -113,21 +116,21 @@ ko.bindingHandlers.clientPeoplePicker = {
         if (peoplePicker) {
             var keys = peoplePicker.GetAllUserKeys();
             keys = keys.length > 0 ? keys.split(";") : [];
-            var eKeys = obs() && obs().length ? obs() : [];
+            var updateKeys = obs() && obs().length ? obs() : [];
             var newKeys = new Array();
-            for (var x = 0; x < keys.length; x++) {
-                for (var y = 0; y < eKeys.length && eKeys[y] != keys[x]; y++) { }
-                if (y >= eKeys.length) {
-                    newKeys[newKeys.length] = keys[x];
+            for (var x = 0; x < updateKeys.length; x++) {
+                for (var y = 0; y < keys.length && updateKeys[x] != keys[y]; y++) { }
+                if (y >= keys.length) {
+                    newKeys[newKeys.length] = updateKeys[x];
                 }
             }
+
             if (newKeys.length > 0) {
-                var keyStr = newKeys.join(";");
                 peoplePicker.AddUserKeys(newKeys.join(";"));
             }
         }
     },
-    initPeoplePicker: function (elementId, keys, onValueChanged) {
+    initPeoplePicker: function (elementId) {
         var schema = {};
         schema['PrincipalAccountType'] = 'User';
         schema['SearchPrincipalSource'] = 15;
@@ -136,31 +139,14 @@ ko.bindingHandlers.clientPeoplePicker = {
         schema['MaximumEntitySuggestions'] = 50;
         //schema['Width'] = '280px'; //use default width
 
-        // Render and initialize the picker. 
-        // Pass the ID of the DOM element that contains the picker, an array of initial
-        // PickerEntity objects to set the picker value, and a schema that defines
-        // picker properties.
-        var users = [];
-        if (keys && keys.length) {
-            var parts = keys;
-            for (var x = 0; x < parts.length; x++) {
-                users[users.length] = {
-                    AutoFillDisplayText: parts[x].split("|")[1],
-                    AutoFillKey: parts[x],
-                    Description: "",
-                    DisplayText: parts[x].split("|")[1],
-                    EntityType: "User",
-                    IsResolved: true,
-                    Key: parts[x],
-                    Resolved: true
-                };
-            }
-        }
+        var dfd = $j.Deferred();
+
         SPSODAction(["sp.js", "clienttemplates.js", "clientforms.js", "clientpeoplepicker.js", "autofill.js"], function () {
-            SPClientPeoplePicker_InitStandaloneControlWrapper(elementId, users, schema);
-            var picker = SPClientPeoplePicker.SPClientPeoplePickerDict[elementId + "_TopSpan"];
-            picker.OnValueChangedClientScript = onValueChanged;
+            SPClientPeoplePicker_InitStandaloneControlWrapper(elementId, null, schema);
+            dfd.resolve(SPClientPeoplePicker.SPClientPeoplePickerDict[elementId + "_TopSpan"]);
         });
+
+        return dfd.promise();
     }
 };
 

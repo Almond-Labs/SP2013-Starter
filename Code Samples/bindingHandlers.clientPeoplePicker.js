@@ -30,7 +30,8 @@ ko.bindingHandlers.clientPeoplePicker = {
         if (typeof SPClientPeoplePicker === 'undefined')
             return;
 
-        var peoplePicker = SPClientPeoplePicker.SPClientPeoplePickerDict[obs._peoplePickerId];
+        var peoplePicker =
+            SPClientPeoplePicker.SPClientPeoplePickerDict[obs._peoplePickerId];
         if (peoplePicker) {
             var keys = peoplePicker.GetAllUserKeys();
             keys = keys.length > 0 ? keys.split(";") : [];
@@ -62,7 +63,8 @@ ko.bindingHandlers.clientPeoplePicker = {
         SPSODAction(["sp.js", "clienttemplates.js", "clientforms.js",
             "clientpeoplepicker.js", "autofill.js"], function () {
             SPClientPeoplePicker_InitStandaloneControlWrapper(elementId, null, schema);
-            dfd.resolve(SPClientPeoplePicker.SPClientPeoplePickerDict[elementId + "_TopSpan"]);
+            dfd.resolve(
+                SPClientPeoplePicker.SPClientPeoplePickerDict[elementId + "_TopSpan"]);
         });
 
         return dfd.promise();

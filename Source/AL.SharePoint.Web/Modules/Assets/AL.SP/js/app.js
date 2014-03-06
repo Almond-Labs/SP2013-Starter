@@ -467,8 +467,7 @@ function overrideSearchBox() {
 
 function loadMembersWebPart(initUsers) {
     var model = new PeoplePickerMembersViewModel(initUsers);
-    var partId = "Element_KOPeoplePicker_" + loadMembersWebPart.curId++;
-    partId = partId.replace(/[^A-z0-9]+/g, '');
+    var partId = "ElementKOPeoplePicker" + loadMembersWebPart.curId++;
     document.write("<div id='" + partId + "'></div>");
     if (pageInEditMode()) {
         loadWebPart(partId, webParts.editMembers, function () {

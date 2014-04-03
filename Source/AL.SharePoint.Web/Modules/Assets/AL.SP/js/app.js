@@ -14,6 +14,29 @@ var webParts = {
 };
 webParts.showMembers = webParts.partPath + 'Members.html';
 webParts.editMembers = webParts.partPath + 'EditMembers.html';
+webPartsUpdated = false;
+webPartsCallbacks = [];
+webPartsOnUpdated = function (callback) {
+    if (webPartsUpdated) {
+        callback();
+    }
+    else {
+        webPartsCallbacks[webPartsCallbacks.length] = callback;
+    }
+}
+
+//Update web part template Url's to be relative to the current site collection
+$j(document).ready(function () {
+    SPSODAction(["sp.js"], function () {
+        for (var key in webParts) {
+            webParts[key] = _spPageContextInfo.siteServerRelativeUrl.replace(/\/$/, "") + webParts[key];
+        }
+        webPartsUpdated = true;
+        for (var x = 0; x < webPartsCallbacks.length; x++) {
+            webPartsCallbacks[x]();
+        }
+    });
+});
 
 //Handlers
 ko.bindingHandlers.renderUser = {
@@ -337,11 +360,11 @@ function loadSPData(url, completeFunction) {
 }
 
 function loadWebPart(partId, contentFile, complete) {
-    $j(document).ready(function () {
+    //$j(document).ready(function () {
         $j('#' + partId).load(contentFile + rev, function () {
             complete();
         });
-    });
+    //});
 }
 
 function loadWebPartData(partId, contentFile, getUrl, complete) {
@@ -455,21 +478,17 @@ function loadMembersWebPart(initUsers) {
     var model = new PeoplePickerMembersViewModel(initUsers);
     var partId = "ElementKOPeoplePicker" + loadMembersWebPart.curId++;
     document.write("<div id='" + partId + "'></div>");
-    if (pageInEditMode()) {
-        loadWebPart(partId, webParts.editMembers, function () {
-            ko.applyBindings(model, document.getElementById(partId));
-        }, true);
-    }
-    else {
-        loadWebPart(partId, webParts.showMembers, function () {
-            ko.applyBindings(model, document.getElementById(partId));
-        }, true);
-    }
+    webPartsOnUpdated(function () {
+        if (pageInEditMode()) {
+            loadWebPart(partId, webParts.editMembers, function () {
+                ko.applyBindings(model, document.getElementById(partId));
+            }, true);
+        }
+        else {
+            loadWebPart(partId, webParts.showMembers, function () {
+                ko.applyBindings(model, document.getElementById(partId));
+            }, true);
+        }
+    });
 }
 loadMembersWebPart.curId = 0;
-
-SPSODAction(["sp.js"], function () {
-    for (var key in webParts) {
-        webParts[key] = _spPageContextInfo.siteServerRelativeUrl.replace(/\/$/, "") + webParts[key];
-    }
-});

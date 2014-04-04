@@ -10,33 +10,10 @@ $j(document).ready(function () {
 var rev = '?Rev=1.01';
 
 var webParts = {
-    partPath: '/_catalogs/masterpage/al.sp/parts/',
+    partPath: function () { return _spPageContextInfo.siteServerRelativeUrl.replace(/\/$/, "") + '/_catalogs/masterpage/al.sp/parts/' },
+    showMembers: 'Members.html',
+    editMembers: 'EditMembers.html'
 };
-webParts.showMembers = webParts.partPath + 'Members.html';
-webParts.editMembers = webParts.partPath + 'EditMembers.html';
-webPartsUpdated = false;
-webPartsCallbacks = [];
-webPartsOnUpdated = function (callback) {
-    if (webPartsUpdated) {
-        callback();
-    }
-    else {
-        webPartsCallbacks[webPartsCallbacks.length] = callback;
-    }
-}
-
-//Update web part template Url's to be relative to the current site collection
-$j(document).ready(function () {
-    SPSODAction(["sp.js"], function () {
-        for (var key in webParts) {
-            webParts[key] = _spPageContextInfo.siteServerRelativeUrl.replace(/\/$/, "") + webParts[key];
-        }
-        webPartsUpdated = true;
-        for (var x = 0; x < webPartsCallbacks.length; x++) {
-            webPartsCallbacks[x]();
-        }
-    });
-});
 
 //Handlers
 ko.bindingHandlers.renderUser = {
@@ -344,8 +321,8 @@ function saveToScriptEditor(wpId, obj) {
         content = content.replace(match[0], match[0].replace(match[1], JSON.stringify(obj)));
         saveWebPartProperties(wpId, { Content: content }).done(function () {
             dfd.resolve()
-        }).fail(self.error);
-    }).fail(self.error);
+        }).fail(dfd.reject);
+    }).fail(dfd.reject);
 
     return dfd.promise();
 }
@@ -360,11 +337,22 @@ function loadSPData(url, completeFunction) {
 }
 
 function loadWebPart(partId, contentFile, complete) {
-    //$j(document).ready(function () {
-        $j('#' + partId).load(contentFile + rev, function () {
-            complete();
+    $j('#' + partId).load(contentFile + rev, function () {
+        complete();
+    });
+}
+
+function createKnockoutWebPart(elementId, wpName, viewModel) {
+    SPSODAction(["sp.js"], function () {
+        var prefix = "show";
+        if (pageInEditMode()) {
+            prefix = "edit";
+        }
+        var templatePath = webParts.partPath() + webParts[prefix + wpName];
+        $j('#' + elementId).load(templatePath + rev, function () {
+            ko.applyBindings(viewModel, document.getElementById(elementId));
         });
-    //});
+    });
 }
 
 function loadWebPartData(partId, contentFile, getUrl, complete) {
@@ -475,20 +463,8 @@ function overrideSearchBox() {
 }
 
 function loadMembersWebPart(initUsers) {
-    var model = new PeoplePickerMembersViewModel(initUsers);
     var partId = "ElementKOPeoplePicker" + loadMembersWebPart.curId++;
     document.write("<div id='" + partId + "'></div>");
-    webPartsOnUpdated(function () {
-        if (pageInEditMode()) {
-            loadWebPart(partId, webParts.editMembers, function () {
-                ko.applyBindings(model, document.getElementById(partId));
-            }, true);
-        }
-        else {
-            loadWebPart(partId, webParts.showMembers, function () {
-                ko.applyBindings(model, document.getElementById(partId));
-            }, true);
-        }
-    });
+    createKnockoutWebPart(partId, "Members", new PeoplePickerMembersViewModel(initUsers));
 }
 loadMembersWebPart.curId = 0;
